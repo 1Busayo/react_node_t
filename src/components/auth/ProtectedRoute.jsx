@@ -47,7 +47,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   // If not authenticated, redirect to login with return path
   if (!isAuthenticated) {
     console.log(`Authentication required for: ${location.pathname}`);
-    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+    return <Navigate to="/user/dashboard" state={{ from: location.pathname }} replace />;
   }
   
   /**
