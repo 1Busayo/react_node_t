@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const User = require("../models/UserLog");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -34,6 +35,17 @@ const loginUser = async (req, res) => {
         if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
         const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+        //added saving of user logs
+
+        await UserLog.create({
+    user: user._id,
+    fullName: user.fullName,
+    role: user.role,
+    ipAddress: req.ip,
+    jwtToken: token,
+    loginTime: new Date(),
+  });
 
         res.json({ token, userId: user._id, role: user.role });
     } catch (error) {

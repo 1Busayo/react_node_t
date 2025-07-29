@@ -25,6 +25,7 @@
 // module.exports =  {protect, adminOnly} ;
 const express = require("express");
 const User = require("../models/User");
+const UserLog = require("../models/UserLog");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -106,6 +107,16 @@ router.post("/login", async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
+                      //added saving of user logs
+
+        await UserLog.create({
+    user: user._id,
+    fullName: user.fullName,
+    role: user.role,
+    ipAddress: req.ip,
+    jwtToken: token,
+    loginTime: new Date(),
+  });
 
         res.json({ message: "Login successful", token, role: user.role });
     } catch (error) {
