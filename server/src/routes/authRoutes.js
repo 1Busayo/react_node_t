@@ -107,7 +107,7 @@ router.post("/login", async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
-                      //added saving of user logs
+         //added saving of user logs
 
         await UserLog.create({
     user: user._id,
