@@ -56,7 +56,6 @@ router.post("/login", async (req, res) => {
     if (user.role !== "admin") {
       return res.status(403).json({ message: "Access denied. Admins only." });
     }
-
     // Generate JWT
     const token = jwt.sign(
       { userId: user._id, role: user.role },
